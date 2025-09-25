@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 
+import authRuntimeConfig from './auth-runtime';
+
 export interface AuthConfig {
   password: string;
   username?: string;
@@ -16,6 +18,26 @@ export interface AuthConfig {
 
 // 缓存配置以避免重复解析
 let cachedAuthConfig: AuthConfig | null = null;
+
+/**
+ * 从静态导入的auth-runtime模块获取配置
+ */
+function parseAuthConfigFromRuntime(): AuthConfig | null {
+  try {
+    const config = authRuntimeConfig as AuthConfig;
+    
+    // 验证配置格式
+    if (!config.password || typeof config.password !== 'string') {
+      throw new Error('配置中缺少有效的密码字段');
+    }
+
+    console.log('成功加载auth-runtime配置');
+    return config;
+  } catch (error) {
+    console.error('读取auth-runtime配置失败:', error);
+    return null;
+  }
+}
 
 /**
  * 从环境变量读取JSON格式的认证配置
@@ -56,7 +78,14 @@ export function getAuthConfig(): AuthConfig | null {
     return cachedAuthConfig;
   }
 
-  // 尝试从环境变量解析配置
+  // 首先尝试从静态导入的runtime配置读取
+  const runtimeConfig = parseAuthConfigFromRuntime();
+  if (runtimeConfig) {
+    cachedAuthConfig = runtimeConfig;
+    return runtimeConfig;
+  }
+
+  // 然后尝试从环境变量解析配置
   const envConfig = parseAuthConfigFromEnv();
   if (envConfig) {
     cachedAuthConfig = envConfig;

@@ -26,8 +26,8 @@ export async function GET(request: NextRequest) {
   const username = authInfo.username;
 
   if (username !== getAdminUsername()) {
-      return NextResponse.json({ error: '权限不足' }, { status: 401 });
-    }
+    return NextResponse.json({ error: '权限不足' }, { status: 401 });
+  }
 
   try {
     await resetConfig();
