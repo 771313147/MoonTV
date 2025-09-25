@@ -8,56 +8,68 @@ import { getAdminPassword } from '@/lib/auth-config';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 跳过不需要认证的路径
+  // 跳过不需要验证的路径
   if (shouldSkipAuth(pathname)) {
     return NextResponse.next();
   }
 
-  const storageType = (globalThis as any).process?.env?.NEXT_PUBLIC_STORAGE_TYPE || 'localstorage';
-
-  if (!getAdminPassword()) {
-    // 如果没有设置密码，重定向到警告页面
-    const warningUrl = new URL('/warning', request.url);
-    return NextResponse.redirect(warningUrl);
+  // 获取管理员密码
+  const adminPassword = getAdminPassword();
+  console.log('中间件: 管理员密码状态:', adminPassword ? '已配置' : '未配置');
+  
+  if (!adminPassword) {
+    console.log('中间件: 未找到管理员密码，重定向到警告页面');
+    return NextResponse.redirect(new URL('/warning', request.url));
   }
 
-  // 从cookie获取认证信息
-  const authInfo = getAuthInfoFromCookie(request);
+  // 获取存储类型
+  const storageType = (typeof globalThis.process !== 'undefined' && globalThis.process.env.STORAGE_TYPE) || 'localstorage';
+  console.log('中间件: 存储类型:', storageType);
 
-  if (!authInfo) {
-    return handleAuthFailure(request, pathname);
-  }
-
-  // localstorage模式：在middleware中完成验证
   if (storageType === 'localstorage') {
-    if (!authInfo.password || authInfo.password !== getAdminPassword()) {
-      return handleAuthFailure(request, pathname);
-    }
+    // localstorage模式下跳过服务端验证
+    console.log('中间件: localstorage模式，跳过服务端验证');
     return NextResponse.next();
   }
 
-  // 其他模式：只验证签名
-  // 检查是否有用户名（非localStorage模式下密码不存储在cookie中）
-  if (!authInfo.username || !authInfo.signature) {
+  // 其他模式下进行cookie验证
+  const authInfo = getAuthInfoFromCookie(request);
+  console.log('中间件: 认证信息状态:', authInfo ? '已找到' : '未找到');
+  
+  if (!authInfo) {
+    console.log('中间件: 未找到认证信息，重定向到登录页面');
     return handleAuthFailure(request, pathname);
   }
 
-  // 验证签名（如果存在）
-  if (authInfo.signature) {
-    const isValidSignature = await verifySignature(
-      authInfo.username,
-      authInfo.signature,
-      getAdminPassword() || ''
-    );
+  const { username, timestamp, signature } = authInfo;
 
-    // 签名验证通过即可
-    if (isValidSignature) {
-      return NextResponse.next();
-    }
+  // 验证必要字段
+  if (!username || !timestamp || !signature) {
+    console.log('中间件: 认证信息不完整');
+    return handleAuthFailure(request, pathname);
   }
 
-  // 签名验证失败或不存在签名
-  return handleAuthFailure(request, pathname);
+  // 验证时间戳（24小时有效期）
+  const now = Date.now();
+  const tokenAge = now - timestamp;
+  const maxAge = 24 * 60 * 60 * 1000; // 24小时
+
+  if (tokenAge > maxAge) {
+    console.log('中间件: 认证令牌已过期');
+    return handleAuthFailure(request, pathname);
+  }
+
+  // 验证签名
+  const data = `${username}:${timestamp}`;
+  const isValidSignature = await verifySignature(data, signature, adminPassword);
+
+  if (!isValidSignature) {
+    console.log('中间件: 签名验证失败');
+    return handleAuthFailure(request, pathname);
+  }
+
+  console.log('中间件: 认证成功，允许访问');
+  return NextResponse.next();
 }
 
 // 验证签名
@@ -119,6 +131,14 @@ function handleAuthFailure(
 // 判断是否需要跳过认证的路径
 function shouldSkipAuth(pathname: string): boolean {
   const skipPaths = [
+    '/api/login',
+    '/api/register', 
+    '/api/logout',
+    '/login',
+    '/register',
+    '/warning',
+    '/debug',  // 添加调试页面
+    '/api/debug',  // 添加调试API
     '/_next',
     '/favicon.ico',
     '/robots.txt',

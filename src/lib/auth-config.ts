@@ -92,6 +92,11 @@ export function getAuthConfig(): AuthConfig | null {
     return envConfig;
   }
 
+  // 在生产环境中添加调试日志
+  if (typeof globalThis.process !== 'undefined') {
+    console.log('AUTH_CONFIG_JSON环境变量:', globalThis.process.env.AUTH_CONFIG_JSON ? '已设置' : '未设置');
+  }
+
   return null;
 }
 
@@ -103,11 +108,19 @@ export function getAdminPassword(): string | null {
   // 首先尝试从配置读取
   const authConfig = getAuthConfig();
   if (authConfig && authConfig.password) {
+    console.log('从配置获取到管理员密码');
     return authConfig.password;
   }
 
   // 回退到环境变量（向后兼容）
-  return (typeof globalThis.process !== 'undefined' && globalThis.process.env.PASSWORD) || null;
+  const envPassword = (typeof globalThis.process !== 'undefined' && globalThis.process.env.PASSWORD) || null;
+  if (envPassword) {
+    console.log('从环境变量PASSWORD获取到管理员密码');
+    return envPassword;
+  }
+
+  console.log('未找到管理员密码配置');
+  return null;
 }
 
 /**
