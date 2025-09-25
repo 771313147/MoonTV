@@ -33,10 +33,9 @@ import { GripVertical } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
+import PageLayout from '@/components/PageLayout';
 import { AdminConfig, AdminConfigResult } from '@/lib/admin.types';
 import { getAuthInfoFromBrowserCookie } from '@/lib/auth';
-
-import PageLayout from '@/components/PageLayout';
 
 // 统一弹窗方法（必须在首次使用前定义）
 const showError = (message: string) =>
@@ -98,10 +97,10 @@ const CollapsibleTab = ({
   children,
 }: CollapsibleTabProps) => {
   return (
-    <div className='rounded-xl shadow-sm mb-4 overflow-hidden bg-white/80 backdrop-blur-md dark:bg-gray-800/50 dark:ring-1 dark:ring-gray-700'>
+    <div className='mb-4 overflow-hidden rounded-xl bg-white/80 shadow-sm backdrop-blur-md dark:bg-gray-800/50 dark:ring-1 dark:ring-gray-700'>
       <button
         onClick={onToggle}
-        className='w-full px-6 py-4 flex items-center justify-between bg-gray-50/70 dark:bg-gray-800/60 hover:bg-gray-100/80 dark:hover:bg-gray-700/60 transition-colors'
+        className='flex w-full items-center justify-between bg-gray-50/70 px-6 py-4 transition-colors hover:bg-gray-100/80 dark:bg-gray-800/60 dark:hover:bg-gray-700/60'
       >
         <div className='flex items-center gap-3'>
           {icon}
@@ -292,10 +291,10 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
     <div className='space-y-6'>
       {/* 用户统计 */}
       <div>
-        <h4 className='text-sm font-medium text-gray-700 dark:text-gray-300 mb-3'>
+        <h4 className='mb-3 text-sm font-medium text-gray-700 dark:text-gray-300'>
           用户统计
         </h4>
-        <div className='p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800'>
+        <div className='rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20'>
           <div className='text-2xl font-bold text-green-800 dark:text-green-300'>
             {config.UserConfig.Users.length}
           </div>
@@ -307,7 +306,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
 
       {/* 注册设置 */}
       <div>
-        <h4 className='text-sm font-medium text-gray-700 dark:text-gray-300 mb-3'>
+        <h4 className='mb-3 text-sm font-medium text-gray-700 dark:text-gray-300'>
           注册设置
         </h4>
         <div className='flex items-center justify-between'>
@@ -341,7 +340,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                 : 'bg-gray-200 dark:bg-gray-700'
             } ${
               isD1Storage || isUpstashStorage
-                ? 'opacity-50 cursor-not-allowed'
+                ? 'cursor-not-allowed opacity-50'
                 : ''
             }`}
           >
@@ -358,7 +357,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
 
       {/* 用户列表 */}
       <div>
-        <div className='flex items-center justify-between mb-3'>
+        <div className='mb-3 flex items-center justify-between'>
           <h4 className='text-sm font-medium text-gray-700 dark:text-gray-300'>
             用户列表
           </h4>
@@ -370,7 +369,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                 setChangePasswordUser({ username: '', password: '' });
               }
             }}
-            className='px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors'
+            className='rounded-lg bg-green-600 px-3 py-1 text-sm text-white transition-colors hover:bg-green-700'
           >
             {showAddUserForm ? '取消' : '添加用户'}
           </button>
@@ -378,8 +377,8 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
 
         {/* 添加用户表单 */}
         {showAddUserForm && (
-          <div className='mb-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700'>
-            <div className='flex flex-col sm:flex-row gap-4 sm:gap-3'>
+          <div className='mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900'>
+            <div className='flex flex-col gap-4 sm:flex-row sm:gap-3'>
               <input
                 type='text'
                 placeholder='用户名'
@@ -387,7 +386,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                 onChange={(e) =>
                   setNewUser((prev) => ({ ...prev, username: e.target.value }))
                 }
-                className='flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+                className='flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
               />
               <input
                 type='password'
@@ -396,12 +395,12 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                 onChange={(e) =>
                   setNewUser((prev) => ({ ...prev, password: e.target.value }))
                 }
-                className='flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+                className='flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
               />
               <button
                 onClick={handleAddUser}
                 disabled={!newUser.username || !newUser.password}
-                className='w-full sm:w-auto px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors'
+                className='w-full rounded-lg bg-green-600 px-4 py-2 text-white transition-colors hover:bg-green-700 disabled:bg-gray-400 sm:w-auto'
               >
                 添加
               </button>
@@ -411,17 +410,17 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
 
         {/* 修改密码表单 */}
         {showChangePasswordForm && (
-          <div className='mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700'>
-            <h5 className='text-sm font-medium text-blue-800 dark:text-blue-300 mb-3'>
+          <div className='mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-700 dark:bg-blue-900/20'>
+            <h5 className='mb-3 text-sm font-medium text-blue-800 dark:text-blue-300'>
               修改用户密码
             </h5>
-            <div className='flex flex-col sm:flex-row gap-4 sm:gap-3'>
+            <div className='flex flex-col gap-4 sm:flex-row sm:gap-3'>
               <input
                 type='text'
                 placeholder='用户名'
                 value={changePasswordUser.username}
                 disabled
-                className='flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-not-allowed'
+                className='flex-1 cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100'
               />
               <input
                 type='password'
@@ -433,12 +432,12 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                     password: e.target.value,
                   }))
                 }
-                className='flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                className='flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
               />
               <button
                 onClick={handleChangePassword}
                 disabled={!changePasswordUser.password}
-                className='w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors'
+                className='w-full rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-400 sm:w-auto'
               >
                 修改密码
               </button>
@@ -447,7 +446,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                   setShowChangePasswordForm(false);
                   setChangePasswordUser({ username: '', password: '' });
                 }}
-                className='w-full sm:w-auto px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors'
+                className='w-full rounded-lg bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700 sm:w-auto'
               >
                 取消
               </button>
@@ -456,31 +455,31 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
         )}
 
         {/* 用户列表 */}
-        <div className='border border-gray-200 dark:border-gray-700 rounded-lg max-h-[28rem] overflow-y-auto overflow-x-auto'>
+        <div className='max-h-[28rem] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 dark:border-gray-700'>
           <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
             <thead className='bg-gray-50 dark:bg-gray-900'>
               <tr>
                 <th
                   scope='col'
-                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'
+                  className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'
                 >
                   用户名
                 </th>
                 <th
                   scope='col'
-                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'
+                  className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'
                 >
                   角色
                 </th>
                 <th
                   scope='col'
-                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'
+                  className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'
                 >
                   状态
                 </th>
                 <th
                   scope='col'
-                  className='px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'
+                  className='px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'
                 >
                   操作
                 </th>
@@ -523,19 +522,19 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                     return (
                       <tr
                         key={user.username}
-                        className='hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
+                        className='transition-colors hover:bg-gray-50 dark:hover:bg-gray-800'
                       >
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100'>
+                        <td className='whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100'>
                           {user.username}
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap'>
+                        <td className='whitespace-nowrap px-6 py-4'>
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
+                            className={`rounded-full px-2 py-1 text-xs ${
                               user.role === 'owner'
-                                ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300'
+                                ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300'
                                 : user.role === 'admin'
-                                ? 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300'
+                                : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                             }`}
                           >
                             {user.role === 'owner'
@@ -545,25 +544,25 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                               : '普通用户'}
                           </span>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap'>
+                        <td className='whitespace-nowrap px-6 py-4'>
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
+                            className={`rounded-full px-2 py-1 text-xs ${
                               !user.banned
-                                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+                                : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
                             }`}
                           >
                             {!user.banned ? '正常' : '已封禁'}
                           </span>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2'>
+                        <td className='space-x-2 whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>
                           {/* 修改密码按钮 */}
                           {canChangePassword && (
                             <button
                               onClick={() =>
                                 handleShowChangePasswordForm(user.username)
                               }
-                              className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/40 dark:hover:bg-blue-900/60 dark:text-blue-200 transition-colors'
+                              className='inline-flex items-center rounded-full bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-800 transition-colors hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:bg-blue-900/60'
                             >
                               修改密码
                             </button>
@@ -574,7 +573,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                               {user.role === 'user' && (
                                 <button
                                   onClick={() => handleSetAdmin(user.username)}
-                                  className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900/40 dark:hover:bg-purple-900/60 dark:text-purple-200 transition-colors'
+                                  className='inline-flex items-center rounded-full bg-purple-100 px-3 py-1.5 text-xs font-medium text-purple-800 transition-colors hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-200 dark:hover:bg-purple-900/60'
                                 >
                                   设为管理
                                 </button>
@@ -584,7 +583,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                                   onClick={() =>
                                     handleRemoveAdmin(user.username)
                                   }
-                                  className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700/40 dark:hover:bg-gray-700/60 dark:text-gray-200 transition-colors'
+                                  className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-800 transition-colors hover:bg-gray-200 dark:bg-gray-700/40 dark:text-gray-200 dark:hover:bg-gray-700/60'
                                 >
                                   取消管理
                                 </button>
@@ -593,7 +592,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                                 (!user.banned ? (
                                   <button
                                     onClick={() => handleBanUser(user.username)}
-                                    className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/40 dark:hover:bg-red-900/60 dark:text-red-300 transition-colors'
+                                    className='inline-flex items-center rounded-full bg-red-100 px-3 py-1.5 text-xs font-medium text-red-800 transition-colors hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300 dark:hover:bg-red-900/60'
                                   >
                                     封禁
                                   </button>
@@ -602,7 +601,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                                     onClick={() =>
                                       handleUnbanUser(user.username)
                                     }
-                                    className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/40 dark:hover:bg-green-900/60 dark:text-green-300 transition-colors'
+                                    className='inline-flex items-center rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-800 transition-colors hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60'
                                   >
                                     解封
                                   </button>
@@ -613,7 +612,7 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                           {canDeleteUser && (
                             <button
                               onClick={() => handleDeleteUser(user.username)}
-                              className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 transition-colors'
+                              className='inline-flex items-center rounded-full bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700'
                             >
                               删除用户
                             </button>
@@ -772,52 +771,52 @@ const VideoSourceConfig = ({
       <tr
         ref={setNodeRef}
         style={style}
-        className='hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors select-none'
+        className='select-none transition-colors hover:bg-gray-50 dark:hover:bg-gray-800'
       >
         <td
-          className='px-2 py-4 cursor-grab text-gray-400'
+          className='cursor-grab px-2 py-4 text-gray-400'
           style={{ touchAction: 'none' }}
           {...attributes}
           {...listeners}
         >
           <GripVertical size={16} />
         </td>
-        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100'>
+        <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'>
           {source.name}
         </td>
-        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100'>
+        <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'>
           {source.key}
         </td>
         <td
-          className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 max-w-[12rem] truncate'
+          className='max-w-[12rem] truncate whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'
           title={source.api}
         >
           {source.api}
         </td>
         <td
-          className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 max-w-[8rem] truncate'
+          className='max-w-[8rem] truncate whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'
           title={source.detail || '-'}
         >
           {source.detail || '-'}
         </td>
-        <td className='px-6 py-4 whitespace-nowrap max-w-[1rem]'>
+        <td className='max-w-[1rem] whitespace-nowrap px-6 py-4'>
           <span
-            className={`px-2 py-1 text-xs rounded-full ${
+            className={`rounded-full px-2 py-1 text-xs ${
               !source.disabled
-                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+                ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+                : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
             }`}
           >
             {!source.disabled ? '启用中' : '已禁用'}
           </span>
         </td>
-        <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2'>
+        <td className='space-x-2 whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>
           <button
             onClick={() => handleToggleEnable(source.key)}
-            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium ${
               !source.disabled
-                ? 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/60'
-                : 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/60'
+                ? 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300 dark:hover:bg-red-900/60'
+                : 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60'
             } transition-colors`}
           >
             {!source.disabled ? '禁用' : '启用'}
@@ -825,7 +824,7 @@ const VideoSourceConfig = ({
           {source.from !== 'config' && (
             <button
               onClick={() => handleDelete(source.key)}
-              className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700/40 dark:hover:bg-gray-700/60 dark:text-gray-200 transition-colors'
+              className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-800 transition-colors hover:bg-gray-200 dark:bg-gray-700/40 dark:text-gray-200 dark:hover:bg-gray-700/60'
             >
               删除
             </button>
@@ -852,15 +851,15 @@ const VideoSourceConfig = ({
         </h4>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className='px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors'
+          className='rounded-lg bg-green-600 px-3 py-1 text-sm text-white transition-colors hover:bg-green-700'
         >
           {showAddForm ? '取消' : '添加视频源'}
         </button>
       </div>
 
       {showAddForm && (
-        <div className='p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        <div className='space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <input
               type='text'
               placeholder='名称'
@@ -868,7 +867,7 @@ const VideoSourceConfig = ({
               onChange={(e) =>
                 setNewSource((prev) => ({ ...prev, name: e.target.value }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             />
             <input
               type='text'
@@ -877,7 +876,7 @@ const VideoSourceConfig = ({
               onChange={(e) =>
                 setNewSource((prev) => ({ ...prev, key: e.target.value }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             />
             <input
               type='text'
@@ -886,7 +885,7 @@ const VideoSourceConfig = ({
               onChange={(e) =>
                 setNewSource((prev) => ({ ...prev, api: e.target.value }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             />
             <input
               type='text'
@@ -895,14 +894,14 @@ const VideoSourceConfig = ({
               onChange={(e) =>
                 setNewSource((prev) => ({ ...prev, detail: e.target.value }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             />
           </div>
           <div className='flex justify-end'>
             <button
               onClick={handleAddSource}
               disabled={!newSource.name || !newSource.key || !newSource.api}
-              className='w-full sm:w-auto px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors'
+              className='w-full rounded-lg bg-green-600 px-4 py-2 text-white transition-colors hover:bg-green-700 disabled:bg-gray-400 sm:w-auto'
             >
               添加
             </button>
@@ -911,27 +910,27 @@ const VideoSourceConfig = ({
       )}
 
       {/* 视频源表格 */}
-      <div className='border border-gray-200 dark:border-gray-700 rounded-lg max-h-[28rem] overflow-y-auto overflow-x-auto'>
+      <div className='max-h-[28rem] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 dark:border-gray-700'>
         <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
           <thead className='bg-gray-50 dark:bg-gray-900'>
             <tr>
               <th className='w-8' />
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 名称
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 Key
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 API 地址
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 Detail 地址
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 状态
               </th>
-              <th className='px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 操作
               </th>
             </tr>
@@ -962,7 +961,7 @@ const VideoSourceConfig = ({
         <div className='flex justify-end'>
           <button
             onClick={handleSaveOrder}
-            className='px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors'
+            className='rounded-lg bg-blue-600 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700'
           >
             保存排序
           </button>
@@ -1122,7 +1121,7 @@ const CategoryConfig = ({
       <tr
         ref={setNodeRef}
         style={style}
-        className='hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors select-none'
+        className='select-none transition-colors hover:bg-gray-50 dark:hover:bg-gray-800'
       >
         <td
           className={`px-2 py-4 ${
@@ -1137,38 +1136,38 @@ const CategoryConfig = ({
         >
           <GripVertical size={16} />
         </td>
-        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100'>
+        <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'>
           {category.name || '-'}
         </td>
-        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100'>
+        <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'>
           <span
-            className={`px-2 py-1 text-xs rounded-full ${
+            className={`rounded-full px-2 py-1 text-xs ${
               category.type === 'movie'
-                ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300'
-                : 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300'
+                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300'
+                : 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300'
             }`}
           >
             {category.type === 'movie' ? '电影' : '电视剧'}
           </span>
         </td>
         <td
-          className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 max-w-[12rem] truncate'
+          className='max-w-[12rem] truncate whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100'
           title={category.query}
         >
           {category.query}
         </td>
-        <td className='px-6 py-4 whitespace-nowrap max-w-[1rem]'>
+        <td className='max-w-[1rem] whitespace-nowrap px-6 py-4'>
           <span
-            className={`px-2 py-1 text-xs rounded-full ${
+            className={`rounded-full px-2 py-1 text-xs ${
               !category.disabled
-                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+                ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+                : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
             }`}
           >
             {!category.disabled ? '启用中' : '已禁用'}
           </span>
         </td>
-        <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2'>
+        <td className='space-x-2 whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>
           <button
             onClick={() =>
               !isD1Storage &&
@@ -1176,12 +1175,12 @@ const CategoryConfig = ({
               handleToggleEnable(category.query, category.type)
             }
             disabled={isD1Storage || isUpstashStorage}
-            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium ${
               isD1Storage || isUpstashStorage
-                ? 'bg-gray-400 cursor-not-allowed text-white'
+                ? 'cursor-not-allowed bg-gray-400 text-white'
                 : !category.disabled
-                ? 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/60'
-                : 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/60'
+                ? 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300 dark:hover:bg-red-900/60'
+                : 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60'
             } transition-colors`}
           >
             {!category.disabled ? '禁用' : '启用'}
@@ -1189,7 +1188,7 @@ const CategoryConfig = ({
           {category.from !== 'config' && !isD1Storage && !isUpstashStorage && (
             <button
               onClick={() => handleDelete(category.query, category.type)}
-              className='inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700/40 dark:hover:bg-gray-700/60 dark:text-gray-200 transition-colors'
+              className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-800 transition-colors hover:bg-gray-200 dark:bg-gray-700/40 dark:text-gray-200 dark:hover:bg-gray-700/60'
             >
               删除
             </button>
@@ -1229,10 +1228,10 @@ const CategoryConfig = ({
             !isD1Storage && !isUpstashStorage && setShowAddForm(!showAddForm)
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`px-3 py-1 text-sm rounded-lg transition-colors ${
+          className={`rounded-lg px-3 py-1 text-sm transition-colors ${
             isD1Storage || isUpstashStorage
-              ? 'bg-gray-400 cursor-not-allowed text-white'
-              : 'bg-green-600 hover:bg-green-700 text-white'
+              ? 'cursor-not-allowed bg-gray-400 text-white'
+              : 'bg-green-600 text-white hover:bg-green-700'
           }`}
         >
           {showAddForm ? '取消' : '添加分类'}
@@ -1240,8 +1239,8 @@ const CategoryConfig = ({
       </div>
 
       {showAddForm && !isD1Storage && !isUpstashStorage && (
-        <div className='p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        <div className='space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <input
               type='text'
               placeholder='分类名称'
@@ -1249,7 +1248,7 @@ const CategoryConfig = ({
               onChange={(e) =>
                 setNewCategory((prev) => ({ ...prev, name: e.target.value }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             />
             <select
               value={newCategory.type}
@@ -1259,7 +1258,7 @@ const CategoryConfig = ({
                   type: e.target.value as 'movie' | 'tv',
                 }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             >
               <option value='movie'>电影</option>
               <option value='tv'>电视剧</option>
@@ -1271,14 +1270,14 @@ const CategoryConfig = ({
               onChange={(e) =>
                 setNewCategory((prev) => ({ ...prev, query: e.target.value }))
               }
-              className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+              className='rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
             />
           </div>
           <div className='flex justify-end'>
             <button
               onClick={handleAddCategory}
               disabled={!newCategory.name || !newCategory.query}
-              className='w-full sm:w-auto px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors'
+              className='w-full rounded-lg bg-green-600 px-4 py-2 text-white transition-colors hover:bg-green-700 disabled:bg-gray-400 sm:w-auto'
             >
               添加
             </button>
@@ -1287,24 +1286,24 @@ const CategoryConfig = ({
       )}
 
       {/* 分类表格 */}
-      <div className='border border-gray-200 dark:border-gray-700 rounded-lg max-h-[28rem] overflow-y-auto overflow-x-auto'>
+      <div className='max-h-[28rem] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 dark:border-gray-700'>
         <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
           <thead className='bg-gray-50 dark:bg-gray-900'>
             <tr>
               <th className='w-8' />
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 分类名称
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 类型
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 搜索关键词
               </th>
-              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 状态
               </th>
-              <th className='px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <th className='px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                 操作
               </th>
             </tr>
@@ -1338,7 +1337,7 @@ const CategoryConfig = ({
         <div className='flex justify-end'>
           <button
             onClick={handleSaveOrder}
-            className='px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors'
+            className='rounded-lg bg-blue-600 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700'
           >
             保存排序
           </button>
@@ -1417,7 +1416,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       {/* 站点名称 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
+          className={`mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300 ${
             isD1Storage || isUpstashStorage ? 'opacity-50' : ''
           }`}
         >
@@ -1442,9 +1441,9 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
             setSiteSettings((prev) => ({ ...prev, SiteName: e.target.value }))
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+          className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${
             isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
+              ? 'cursor-not-allowed opacity-50'
               : ''
           }`}
         />
@@ -1453,7 +1452,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       {/* 站点公告 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
+          className={`mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300 ${
             isD1Storage || isUpstashStorage ? 'opacity-50' : ''
           }`}
         >
@@ -1481,9 +1480,9 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
           }
           disabled={isD1Storage || isUpstashStorage}
           rows={3}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+          className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${
             isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
+              ? 'cursor-not-allowed opacity-50'
               : ''
           }`}
         />
@@ -1491,7 +1490,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
 
       {/* 搜索接口可拉取最大页数 */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
           搜索接口可拉取最大页数
         </label>
         <input
@@ -1504,13 +1503,13 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
               SearchDownstreamMaxPage: Number(e.target.value),
             }))
           }
-          className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+          className='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
         />
       </div>
 
       {/* 站点接口缓存时间 */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
           站点接口缓存时间（秒）
         </label>
         <input
@@ -1523,14 +1522,14 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
               SiteInterfaceCacheTime: Number(e.target.value),
             }))
           }
-          className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent'
+          className='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'
         />
       </div>
 
       {/* 图片代理 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
+          className={`mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300 ${
             isD1Storage || isUpstashStorage ? 'opacity-50' : ''
           }`}
         >
@@ -1559,9 +1558,9 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
             }))
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+          className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${
             isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
+              ? 'cursor-not-allowed opacity-50'
               : ''
           }`}
         />
@@ -1573,7 +1572,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       {/* 豆瓣代理设置 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
+          className={`mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300 ${
             isD1Storage || isUpstashStorage ? 'opacity-50' : ''
           }`}
         >
@@ -1602,9 +1601,9 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
             }))
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+          className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${
             isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
+              ? 'cursor-not-allowed opacity-50'
               : ''
           }`}
         />
@@ -1617,7 +1616,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       <div>
         <div className='flex items-center justify-between'>
           <label
-            className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
+            className={`mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300 ${
               isD1Storage || isUpstashStorage ? 'opacity-50' : ''
             }`}
           >
@@ -1650,7 +1649,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
                 : 'bg-gray-200 dark:bg-gray-700'
             } ${
               isD1Storage || isUpstashStorage
-                ? 'opacity-50 cursor-not-allowed'
+                ? 'cursor-not-allowed opacity-50'
                 : ''
             }`}
           >
@@ -1675,9 +1674,9 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
           disabled={saving}
           className={`px-4 py-2 ${
             saving
-              ? 'bg-gray-400 cursor-not-allowed'
+              ? 'cursor-not-allowed bg-gray-400'
               : 'bg-green-600 hover:bg-green-700'
-          } text-white rounded-lg transition-colors`}
+          } rounded-lg text-white transition-colors`}
         >
           {saving ? '保存中…' : '保存'}
         </button>
@@ -1766,16 +1765,16 @@ function AdminPageClient() {
   if (loading) {
     return (
       <PageLayout activePath='/admin'>
-        <div className='px-2 sm:px-10 py-4 sm:py-8'>
-          <div className='max-w-[95%] mx-auto'>
-            <h1 className='text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8'>
+        <div className='px-2 py-4 sm:px-10 sm:py-8'>
+          <div className='mx-auto max-w-[95%]'>
+            <h1 className='mb-8 text-2xl font-bold text-gray-900 dark:text-gray-100'>
               管理员设置
             </h1>
             <div className='space-y-4'>
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className='h-20 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse'
+                  className='h-20 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700'
                 />
               ))}
             </div>
@@ -1792,17 +1791,17 @@ function AdminPageClient() {
 
   return (
     <PageLayout activePath='/admin'>
-      <div className='px-2 sm:px-10 py-4 sm:py-8'>
-        <div className='max-w-[95%] mx-auto'>
+      <div className='px-2 py-4 sm:px-10 sm:py-8'>
+        <div className='mx-auto max-w-[95%]'>
           {/* 标题 + 重置配置按钮 */}
-          <div className='flex items-center gap-2 mb-8'>
+          <div className='mb-8 flex items-center gap-2'>
             <h1 className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
               管理员设置
             </h1>
             {config && role === 'owner' && (
               <button
                 onClick={handleResetConfig}
-                className='px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs rounded-md transition-colors'
+                className='rounded-md bg-red-600 px-3 py-1 text-xs text-white transition-colors hover:bg-red-700'
               >
                 重置配置
               </button>

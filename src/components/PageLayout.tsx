@@ -12,12 +12,12 @@ interface PageLayoutProps {
 
 const PageLayout = ({ children, activePath = '/' }: PageLayoutProps) => {
   return (
-    <div className='w-full min-h-screen'>
+    <div className='min-h-screen w-full'>
       {/* 移动端头部 */}
       <MobileHeader showBackButton={['/play'].includes(activePath)} />
 
       {/* 主要布局容器 */}
-      <div className='flex md:grid md:grid-cols-[auto_1fr] w-full min-h-screen md:min-h-auto'>
+      <div className='md:min-h-auto flex min-h-screen w-full md:grid md:grid-cols-[auto_1fr]'>
         {/* 侧边栏 - 桌面端显示，移动端隐藏 */}
         <div className='hidden md:block'>
           <Sidebar activePath={activePath} />
@@ -27,20 +27,20 @@ const PageLayout = ({ children, activePath = '/' }: PageLayoutProps) => {
         <div className='relative min-w-0 flex-1 transition-all duration-300'>
           {/* 桌面端左上角返回按钮 */}
           {['/play'].includes(activePath) && (
-            <div className='absolute top-3 left-1 z-20 hidden md:flex'>
+            <div className='absolute left-1 top-3 z-20 hidden md:flex'>
               <BackButton />
             </div>
           )}
 
           {/* 桌面端顶部按钮 */}
-          <div className='absolute top-2 right-4 z-20 hidden md:flex items-center gap-2'>
+          <div className='absolute right-4 top-2 z-20 hidden items-center gap-2 md:flex'>
             <ThemeToggle />
             <UserMenu />
           </div>
 
           {/* 主内容 */}
           <main
-            className='flex-1 md:min-h-0 mb-14 md:mb-0'
+            className='mb-14 flex-1 md:mb-0 md:min-h-0'
             style={{
               paddingBottom: 'calc(3.5rem + env(safe-area-inset-bottom))',
             }}

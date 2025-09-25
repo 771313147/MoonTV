@@ -1,9 +1,9 @@
 /* eslint-disable no-console,@typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 
+import { getAdminPassword, getAdminUsername } from '@/lib/auth-config';
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
-import { getAdminPassword, getAdminUsername } from '@/lib/auth-config';
 
 export const runtime = 'edge';
 
@@ -60,9 +60,12 @@ async function generateAuthCookie(
   if (username && getAdminPassword()) {
     authData.username = username;
     // 使用密码作为密钥对用户名进行签名
-    const signature = await generateSignature(username, getAdminPassword()!);
-    authData.signature = signature;
-    authData.timestamp = Date.now(); // 添加时间戳防重放攻击
+    const adminPassword = getAdminPassword();
+    if (adminPassword) {
+      const signature = await generateSignature(username, adminPassword);
+      authData.signature = signature;
+      authData.timestamp = Date.now(); // 添加时间戳防重放攻击
+    }
   }
 
   return encodeURIComponent(JSON.stringify(authData));
@@ -135,10 +138,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 可能是站长，直接读环境变量
-    if (
-      username === getAdminUsername() &&
-      password === getAdminPassword()
-    ) {
+    if (username === getAdminUsername() && password === getAdminPassword()) {
       // 验证成功，设置认证cookie
       const response = NextResponse.json({ ok: true });
       const cookieValue = await generateAuthCookie(

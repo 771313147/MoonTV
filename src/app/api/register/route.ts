@@ -1,10 +1,9 @@
 /* eslint-disable no-console,@typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
 
+import { getAdminPassword, getAdminUsername } from '@/lib/auth-config';
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
-import { getAdminPassword, getAdminUsername } from '@/lib/auth-config';
 
 export const runtime = 'edge';
 
@@ -87,7 +86,10 @@ export async function POST(req: NextRequest) {
 
     // 检查是否和管理员重复
     if (username === getAdminUsername()) {
-      return NextResponse.json({ error: '不允许注册站长用户名' }, { status: 400 });
+      return NextResponse.json(
+        { error: '不允许注册站长用户名' },
+        { status: 400 }
+      );
     }
 
     try {

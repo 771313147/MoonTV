@@ -3,8 +3,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
-import { resetConfig } from '@/lib/config';
 import { getAdminUsername } from '@/lib/auth-config';
+import { resetConfig } from '@/lib/config';
 
 export const runtime = 'edge';
 

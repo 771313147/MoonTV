@@ -16,14 +16,17 @@ export async function middleware(request: NextRequest) {
   // 获取管理员密码
   const adminPassword = getAdminPassword();
   console.log('中间件: 管理员密码状态:', adminPassword ? '已配置' : '未配置');
-  
+
   if (!adminPassword) {
     console.log('中间件: 未找到管理员密码，重定向到警告页面');
     return NextResponse.redirect(new URL('/warning', request.url));
   }
 
   // 获取存储类型
-  const storageType = (typeof globalThis.process !== 'undefined' && globalThis.process.env.STORAGE_TYPE) || 'localstorage';
+  const storageType =
+    (typeof globalThis.process !== 'undefined' &&
+      globalThis.process.env.STORAGE_TYPE) ||
+    'localstorage';
   console.log('中间件: 存储类型:', storageType);
 
   if (storageType === 'localstorage') {
@@ -35,7 +38,7 @@ export async function middleware(request: NextRequest) {
   // 其他模式下进行cookie验证
   const authInfo = getAuthInfoFromCookie(request);
   console.log('中间件: 认证信息状态:', authInfo ? '已找到' : '未找到');
-  
+
   if (!authInfo) {
     console.log('中间件: 未找到认证信息，重定向到登录页面');
     return handleAuthFailure(request, pathname);
@@ -61,7 +64,11 @@ export async function middleware(request: NextRequest) {
 
   // 验证签名
   const data = `${username}:${timestamp}`;
-  const isValidSignature = await verifySignature(data, signature, adminPassword);
+  const isValidSignature = await verifySignature(
+    data,
+    signature,
+    adminPassword
+  );
 
   if (!isValidSignature) {
     console.log('中间件: 签名验证失败');
@@ -132,13 +139,13 @@ function handleAuthFailure(
 function shouldSkipAuth(pathname: string): boolean {
   const skipPaths = [
     '/api/login',
-    '/api/register', 
+    '/api/register',
     '/api/logout',
     '/login',
     '/register',
     '/warning',
-    '/debug',  // 添加调试页面
-    '/api/debug',  // 添加调试API
+    '/debug', // 添加调试页面
+    '/api/debug', // 添加调试API
     '/_next',
     '/favicon.ico',
     '/robots.txt',

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { getAdminPassword } from '@/lib/auth-config';
 
 export async function GET(request: NextRequest) {
@@ -27,16 +28,16 @@ export async function GET(request: NextRequest) {
         isEdgeRuntime: typeof (globalThis as any).EdgeRuntime !== 'undefined',
         hasProcess: typeof process !== 'undefined',
         hasGlobalThis: typeof globalThis !== 'undefined',
-      }
+      },
     };
 
     return NextResponse.json(debugInfo);
   } catch (error: any) {
     return NextResponse.json(
-      { 
+      {
         error: error.message,
         timestamp: new Date().toISOString(),
-        environment: 'server'
+        environment: 'server',
       },
       { status: 500 }
     );

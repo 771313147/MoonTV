@@ -1,10 +1,8 @@
 /* eslint-disable no-console*/
 
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
-import { getConfig } from '@/lib/config';
 import { getAdminUsername } from '@/lib/auth-config';
 import { getStorage } from '@/lib/db';
 import { IStorage } from '@/lib/types';

@@ -2,17 +2,17 @@
 /* eslint-disable */
 
 export const authConfig = {
-  "password": "test123456",
-  "username": "admin",
-  "encryption": {
-    "enabled": false,
-    "algorithm": "AES-256-GCM"
+  password: 'test123456',
+  username: 'admin',
+  encryption: {
+    enabled: false,
+    algorithm: 'AES-256-GCM',
   },
-  "security": {
-    "minPasswordLength": 8,
-    "requireSpecialChars": false
+  security: {
+    minPasswordLength: 8,
+    requireSpecialChars: false,
   },
-  "version": "1.0"
+  version: '1.0',
 } as const;
 
 export type AuthRuntimeConfig = typeof authConfig;

@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { AdminConfigResult } from '@/lib/admin.types';
 import { getAuthInfoFromCookie } from '@/lib/auth';
-import { getConfig } from '@/lib/config';
 import { getAdminUsername } from '@/lib/auth-config';
+import { getConfig } from '@/lib/config';
 
 export const runtime = 'edge';
 

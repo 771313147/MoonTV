@@ -25,7 +25,7 @@ let cachedAuthConfig: AuthConfig | null = null;
 function parseAuthConfigFromRuntime(): AuthConfig | null {
   try {
     const config = authRuntimeConfig as AuthConfig;
-    
+
     // 验证配置格式
     if (!config.password || typeof config.password !== 'string') {
       throw new Error('配置中缺少有效的密码字段');
@@ -94,7 +94,10 @@ export function getAuthConfig(): AuthConfig | null {
 
   // 在生产环境中添加调试日志
   if (typeof globalThis.process !== 'undefined') {
-    console.log('AUTH_CONFIG_JSON环境变量:', globalThis.process.env.AUTH_CONFIG_JSON ? '已设置' : '未设置');
+    console.log(
+      'AUTH_CONFIG_JSON环境变量:',
+      globalThis.process.env.AUTH_CONFIG_JSON ? '已设置' : '未设置'
+    );
   }
 
   return null;
@@ -113,7 +116,10 @@ export function getAdminPassword(): string | null {
   }
 
   // 回退到环境变量（向后兼容）
-  const envPassword = (typeof globalThis.process !== 'undefined' && globalThis.process.env.PASSWORD) || null;
+  const envPassword =
+    (typeof globalThis.process !== 'undefined' &&
+      globalThis.process.env.PASSWORD) ||
+    null;
   if (envPassword) {
     console.log('从环境变量PASSWORD获取到管理员密码');
     return envPassword;
@@ -135,32 +141,40 @@ export function getAdminUsername(): string | null {
   }
 
   // 回退到环境变量（向后兼容）
-  return (typeof globalThis.process !== 'undefined' && globalThis.process.env.USERNAME) || null;
+  return (
+    (typeof globalThis.process !== 'undefined' &&
+      globalThis.process.env.USERNAME) ||
+    null
+  );
 }
 
 /**
  * 验证密码强度（如果配置中启用了安全检查）
  */
-export function validatePassword(password: string): { valid: boolean; message?: string } {
+export function validatePassword(password: string): {
+  valid: boolean;
+  message?: string;
+} {
   const authConfig = getAuthConfig();
 
   if (!authConfig || !authConfig.security) {
     return { valid: true };
   }
 
-  const { minPasswordLength = 8, requireSpecialChars = false } = authConfig.security;
+  const { minPasswordLength = 8, requireSpecialChars = false } =
+    authConfig.security;
 
   if (password.length < minPasswordLength) {
     return {
       valid: false,
-      message: `密码长度至少需要 ${minPasswordLength} 个字符`
+      message: `密码长度至少需要 ${minPasswordLength} 个字符`,
     };
   }
 
   if (requireSpecialChars && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
     return {
       valid: false,
-      message: '密码必须包含特殊字符'
+      message: '密码必须包含特殊字符',
     };
   }
 

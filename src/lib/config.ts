@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, no-console, @typescript-eslint/no-non-null-assertion */
 
+import { getAdminUsername } from '@/lib/auth-config';
 import { getStorage } from '@/lib/db';
 
 import { AdminConfig } from './admin.types';
-import { getAdminUsername } from '@/lib/auth-config';
 import runtimeConfig from './runtime';
 
 export interface ApiSite {
@@ -457,12 +457,12 @@ export async function resetConfig() {
     CustomCategories:
       storageType === 'redis'
         ? customCategories?.map((category) => ({
-          name: category.name,
-          type: category.type,
-          query: category.query,
-          from: 'config',
-          disabled: false,
-        })) || []
+            name: category.name,
+            type: category.type,
+            query: category.query,
+            from: 'config',
+            disabled: false,
+          })) || []
         : [],
   } as AdminConfig;
 
