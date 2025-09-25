@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
+import { getAdminPassword, getAdminUsername } from '@/lib/auth-config';
 
 export const runtime = 'edge';
 
@@ -56,10 +57,10 @@ async function generateAuthCookie(
     authData.password = password;
   }
 
-  if (username && process.env.PASSWORD) {
+  if (username && getAdminPassword()) {
     authData.username = username;
     // 使用密码作为密钥对用户名进行签名
-    const signature = await generateSignature(username, process.env.PASSWORD);
+    const signature = await generateSignature(username, getAdminPassword()!);
     authData.signature = signature;
     authData.timestamp = Date.now(); // 添加时间戳防重放攻击
   }
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
   try {
     // 本地 / localStorage 模式——仅校验固定密码
     if (STORAGE_TYPE === 'localstorage') {
-      const envPassword = process.env.PASSWORD;
+      const envPassword = getAdminPassword();
 
       // 未配置 PASSWORD 时直接放行
       if (!envPassword) {
@@ -135,8 +136,8 @@ export async function POST(req: NextRequest) {
 
     // 可能是站长，直接读环境变量
     if (
-      username === process.env.USERNAME &&
-      password === process.env.PASSWORD
+      username === getAdminUsername() &&
+      password === getAdminPassword()
     ) {
       // 验证成功，设置认证cookie
       const response = NextResponse.json({ ok: true });
@@ -158,7 +159,7 @@ export async function POST(req: NextRequest) {
       });
 
       return response;
-    } else if (username === process.env.USERNAME) {
+    } else if (username === getAdminUsername()) {
       return NextResponse.json({ error: '用户名或密码错误' }, { status: 401 });
     }
 

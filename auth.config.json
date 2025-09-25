@@ -1,0 +1,13 @@
+{
+  "password": "test123456",
+  "username": "admin",
+  "encryption": {
+    "enabled": false,
+    "algorithm": "AES-256-GCM"
+  },
+  "security": {
+    "minPasswordLength": 8,
+    "requireSpecialChars": false
+  },
+  "version": "1.0"
+}

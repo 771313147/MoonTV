@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
+import { getAdminPassword } from '@/lib/auth-config';
 
 export const runtime = 'edge';
 
@@ -50,8 +51,8 @@ async function generateAuthCookie(username: string): Promise<string> {
     timestamp: Date.now(),
   };
 
-  // 使用process.env.PASSWORD作为签名密钥，而不是用户密码
-  const signingKey = process.env.PASSWORD || '';
+  // 使用getAdminPassword()作为签名密钥，而不是用户密码
+  const signingKey = getAdminPassword() || '';
   const signature = await generateSignature(username, signingKey);
   authData.signature = signature;
 

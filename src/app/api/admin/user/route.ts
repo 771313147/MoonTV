@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
-import { getStorage } from '@/lib/db';
-import { IStorage } from '@/lib/types';
+import { getStorage, IStorage } from '@/lib/db';
+import { getAdminUsername } from '@/lib/auth-config';
 
 export const runtime = 'edge';
 
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
 
     // 判定操作者角色
     let operatorRole: 'owner' | 'admin';
-    if (username === process.env.USERNAME) {
+    if (username === getAdminUsername()) {
       operatorRole = 'owner';
     } else {
       const userEntry = adminConfig.UserConfig.Users.find(
