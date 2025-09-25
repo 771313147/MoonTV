@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
+import { getAdminUsername } from '@/lib/auth-config';
 import { getStorage } from '@/lib/db';
 
 export const runtime = 'edge';
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
     const storage = getStorage();
 
     // 权限校验
-    if (username !== process.env.USERNAME) {
+    if (username !== getAdminUsername()) {
       // 管理员
       const user = adminConfig.UserConfig.Users.find(
         (u) => u.username === username

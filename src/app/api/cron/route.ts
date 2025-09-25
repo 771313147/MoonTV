@@ -2,6 +2,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+import { getConfig } from '@/lib/config';
+import { getAdminUsername } from '@/lib/auth-config';
 import { db } from '@/lib/db';
 import { fetchVideoDetail } from '@/lib/fetchVideoDetail';
 import { SearchResult } from '@/lib/types';
@@ -45,8 +47,9 @@ async function refreshRecordAndFavorites() {
 
   try {
     const users = await db.getAllUsers();
-    if (process.env.USERNAME && !users.includes(process.env.USERNAME)) {
-      users.push(process.env.USERNAME);
+    const adminUsername = getAdminUsername();
+    if (adminUsername && !users.includes(adminUsername)) {
+      users.push(adminUsername);
     }
     // 函数级缓存：key 为 `${source}+${id}`，值为 Promise<VideoDetail | null>
     const detailCache = new Map<string, Promise<SearchResult | null>>();

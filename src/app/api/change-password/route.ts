@@ -1,8 +1,11 @@
 /* eslint-disable no-console*/
 
 import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
+import { getConfig } from '@/lib/config';
+import { getAdminUsername } from '@/lib/auth-config';
 import { getStorage } from '@/lib/db';
 import { IStorage } from '@/lib/types';
 
@@ -38,11 +41,11 @@ export async function POST(request: NextRequest) {
 
     const username = authInfo.username;
 
-    // 不允许站长修改密码（站长用户名等于 process.env.USERNAME）
-    if (username === process.env.USERNAME) {
+    // 不允许站长修改密码（站长用户名等于 getAdminUsername()）
+    if (username === getAdminUsername()) {
       return NextResponse.json(
-        { error: '站长不能通过此接口修改密码' },
-        { status: 403 }
+        { error: '站长密码请通过配置文件修改' },
+        { status: 400 }
       );
     }
 

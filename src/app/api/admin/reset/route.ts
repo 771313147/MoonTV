@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
 import { resetConfig } from '@/lib/config';
+import { getAdminUsername } from '@/lib/auth-config';
 
 export const runtime = 'edge';
 
@@ -24,9 +25,9 @@ export async function GET(request: NextRequest) {
   }
   const username = authInfo.username;
 
-  if (username !== process.env.USERNAME) {
-    return NextResponse.json({ error: '仅支持站长重置配置' }, { status: 401 });
-  }
+  if (username !== getAdminUsername()) {
+      return NextResponse.json({ error: '权限不足' }, { status: 401 });
+    }
 
   try {
     await resetConfig();

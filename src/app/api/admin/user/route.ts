@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
-import { getStorage, IStorage } from '@/lib/db';
+import { getStorage } from '@/lib/db';
+import { IStorage } from '@/lib/types';
 import { getAdminUsername } from '@/lib/auth-config';
 
 export const runtime = 'edge';
@@ -139,7 +140,7 @@ export async function POST(request: NextRequest) {
           });
           targetEntry =
             adminConfig.UserConfig.Users[
-              adminConfig.UserConfig.Users.length - 1
+            adminConfig.UserConfig.Users.length - 1
             ];
           break;
         }

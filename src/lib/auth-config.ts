@@ -35,7 +35,7 @@ function parseAuthConfigFromEnv(): AuthConfig | null {
     }
 
     const config: AuthConfig = JSON.parse(configJson);
-    
+
     // 验证配置格式
     if (!config.password || typeof config.password !== 'string') {
       throw new Error('配置中缺少有效的密码字段');
@@ -76,7 +76,7 @@ export function getAdminPassword(): string | null {
   if (authConfig && authConfig.password) {
     return authConfig.password;
   }
-  
+
   // 回退到环境变量（向后兼容）
   return (typeof globalThis.process !== 'undefined' && globalThis.process.env.PASSWORD) || null;
 }
@@ -91,7 +91,7 @@ export function getAdminUsername(): string | null {
   if (authConfig && authConfig.username) {
     return authConfig.username;
   }
-  
+
   // 回退到环境变量（向后兼容）
   return (typeof globalThis.process !== 'undefined' && globalThis.process.env.USERNAME) || null;
 }
@@ -101,27 +101,27 @@ export function getAdminUsername(): string | null {
  */
 export function validatePassword(password: string): { valid: boolean; message?: string } {
   const authConfig = getAuthConfig();
-  
+
   if (!authConfig || !authConfig.security) {
     return { valid: true };
   }
-  
+
   const { minPasswordLength = 8, requireSpecialChars = false } = authConfig.security;
-  
+
   if (password.length < minPasswordLength) {
     return {
       valid: false,
       message: `密码长度至少需要 ${minPasswordLength} 个字符`
     };
   }
-  
+
   if (requireSpecialChars && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
     return {
       valid: false,
       message: '密码必须包含特殊字符'
     };
   }
-  
+
   return { valid: true };
 }
 
